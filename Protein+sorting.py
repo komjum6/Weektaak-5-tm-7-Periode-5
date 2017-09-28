@@ -71,7 +71,7 @@ for x in Excellijst:
 
 # Wat is ['RPL2.1', 'ATPDX1.1', 'PDX1.1'] hierboven op het eind van df_mpk6 en ATPM24.1 in df_mpk3? -Deze zijn eruit gegooit (de regex was niet perfect)
 
-# In[67]:
+# In[69]:
 
 #Ik ga even wat aangepaste lijsten gebruiken
 df_kr_eiwitten = ['ATCG00490.1', 'AT2G07732.1', 'ATMG00280.1', 'AT4G33010.1', 'AT4G33010.2', 'AT5G17920.1', 'AT2G43800.1', 'AT5G20980.1', 'AT2G26080.1', 'AT4G29060.1', 'AT4G29060.2', 'AT4G37930.1', 'AT5G26780.1', 'AT5G25980.2', 'AT5G25980.1', 'AT4G24280.1', 'AT3G29320.1', 'AT2G05710.1', 'AT3G52930.1', 'AT3G26650.1', 'AT2G36530.1', 'AT4G24620.1', 'AT4G24620.2', 'AT1G66200.1', 'AT1G66200.2', 'AT1G66200.3', 'AT1G79920.1', 'AT1G79930.1', 'AT3G08590.1', 'AT3G04120.1', 'AT3G46970.1', 'AT3G09840.1', 'AT3G53230.1', 'AT2G24200.1', 'AT2G24200.3', 'AT3G09820.1', 'AT3G09820.2', 'AT3G52880.1', 'AT1G57720.1', 'AT1G09780.1', 'AT4G20850.1', 'AT4G21280.1', 'AT4G21280.2', 'AT1G16080.1', 'AT3G15450.1', 'AT3G05180.1', 'AT3G10020.1', 'AT2G46440.1', 'AT5G49070.1', 'AT1G57980.1', 'AT2G43590.1', 'AT5G08380.1', 'AT5G15050.1', 'AT1G79790.1', 'AT3G01440.1', 'AT5G52960.1', 'AT5G16760.1', 'AT5G64250.1', 'AT2G37470.1', 'AT1G07790.1', 'AT3G53650.1', 'AT5G24400.1', 'AT2G41430.1', 'AT2G35410.1', 'AT5G15970.1', 'AT4G28300.1', 'AT1G11660.1', 'AT5G20250.4', 'AT5G20250.1', 'AT2G25070.1', 'AT5G21100.1', 'AT1G15930.1', 'AT1G15750.1', 'AT1G36320.1', 'AT1G49975.1', 'AT5G16840.1', 'AT1G53520.1'] 
@@ -90,4 +90,37 @@ print("Dit is een lijst met het Concensusproteoom" ,Concensusproteoom)
 print("\nHier is het in een lijstje")
 for d in Concensusproteoom:
     print(d)
+    
+print("\nNu komen de unieke eiwitten")
+
+Uniek_kr = [c for c in df_kr_eiwitten if c not in df_dd_eiwitten or df_mpk3_eiwitten or df_mpk6_eiwitten]
+Uniek_dd = [c for c in df_dd_eiwitten if c not in df_kr_eiwitten or df_mpk3_eiwitten or df_mpk6_eiwitten]
+Uniek_mpk3 = [c for c in df_mpk3_eiwitten if c not in df_dd_eiwitten or df_kr_eiwitten or df_mpk6_eiwitten]
+Uniek_mpk6 = [c for c in df_mpk6_eiwitten if c not in df_dd_eiwitten or df_mpk3_eiwitten or df_kr_eiwitten]
+
+print("Dit is uniek_kr")
+for e in Uniek_kr:
+    print(e)
+print("Dit is uniek_dd")
+for f in Uniek_dd:
+    print(f)
+print("Dit is uniek_mpk3")
+for g in Uniek_mpk3:
+    print(g)
+print("Dit is uniek_mpk6")
+for h in Uniek_mpk6:
+    print(h)
+
+
+# In[6]:
+
+data = pd.ExcelFile("D:\Bio-Infmap\data-tabel.xlsx")
+print(data.sheet_names)
+df_data = data.parse("Sample overzicht")
+df_data.head()
+
+
+# In[ ]:
+
+
 
