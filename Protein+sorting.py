@@ -8,38 +8,44 @@
 # In[43]:
 
 import pandas as pd
-KR = pd.ExcelFile("D:\Bio-Infmap\KR.xlsx")
-print(KR.sheet_names)
-df_kr = KR.parse("all detected proteins", parse_cols = "A", skiprows=2)
-df_kr.head()
+import sys
+
+desiredP = 0.01
+desiredConf = 50
+
+KR = pd.ExcelFile("KR.xlsx")
+#print(KR.sheet_names)
+df_kr = KR.parse("all detected proteins", parse_cols = "A,C,S", skiprows=2)
+#print(df_kr["Protein code"][0])
+#print(len(df_kr))
 
 
 # In[44]:
 
-DD = pd.ExcelFile("D:\Bio-Infmap\DD.xlsx")
-print(DD.sheet_names)
-df_dd = DD.parse("all detected proteins", parse_cols = "A", skiprows=2)
+DD = pd.ExcelFile("DD.xlsx")
+#print(DD.sheet_names)
+df_dd = DD.parse("all detected proteins", parse_cols = "A,C,S", skiprows=2)
 #df_dd.head()
-print(df_dd)
+#print(df_dd)
 
 
 # In[45]:
 
-mpk3 = pd.ExcelFile("D:\Bio-Infmap\mpk3.xlsx")
-print(mpk3.sheet_names)
-df_mpk3 = mpk3.parse("all detected proteins", parse_cols = "A", skiprows=2)
-df_mpk3.head()
+mpk3 = pd.ExcelFile("mpk3.xlsx")
+#print(mpk3.sheet_names)
+df_mpk3 = mpk3.parse("all detected proteins", parse_cols = "A,C,S", skiprows=2)
+#df_mpk3.head()
 
 
 # In[48]:
 
 pd.options.display.max_columns = 3000
 pd.options.display.max_rows = 3000
-mpk6 = pd.ExcelFile("D:\Bio-Infmap\mpk6.xlsx")
-print(mpk6.sheet_names)
-df_mpk6 = mpk6.parse("all detected proteins", parse_cols = "A", skiprows=2)
+mpk6 = pd.ExcelFile("mpk6.xlsx")
+#print(mpk6.sheet_names)
+df_mpk6 = mpk6.parse("all detected proteins", parse_cols = "A,C,S", skiprows=2)
 #df_mpk6.head()
-print(df_mpk6)
+#print(df_mpk6)
 
 
 # Vind alle dezelfde eiwitten door te zoeken naar overeenkomende accessiecodes
@@ -52,9 +58,21 @@ import re
 Excellijst = [df_kr,df_dd,df_mpk3,df_mpk6]
 VennLijstNietGefilterd = []
 Excellijstnamen = ['df_kr','df_dd','df_mpk3','df_mpk6']
-y = 0
+#y = 0
 
 for x in Excellijst:
+    #print(x.head())
+    for y in range(len(x["Conf score"])):
+        #print(x)
+        if x["Anova (p)"][y] > desiredP or x["Conf score"][y] < desiredConf:
+            x.drop(y,inplace=True)
+	    #print(x["Anova (p)"][y]
+            #print("slut")
+    x.drop('Anova (p)',axis=1,inplace=True)
+    x.drop('Conf score',axis=1,inplace=True)
+#print(Excellijst)
+
+#for x in Excellijst:
     string = ""
     for ding in str(x):
         string = string + ding
@@ -62,41 +80,23 @@ for x in Excellijst:
     regex = r'([A-Z]\w+\.[123456789])'
     pattern = re.compile(regex) 
     accessiecodes = re.findall(pattern, string)
-    print('Dit is de', Excellijstnamen[y], 'lijst' ,accessiecodes)
+    #print('Dit is de', Excellijstnamen[y], 'lijst' ,accessiecodes)
     VennLijstNietGefilterd.append(accessiecodes)
-    y += 1
-for item in VennLijstNietGefilterd:
-        print(item)
-        print("\n")
+    #y += 1
+
+
+for item in range(len(VennLijstNietGefilterd)):
+    filetje = open(Excellijstnamen[item]+"MetKR.txt",'w');
+    for i in VennLijstNietGefilterd[item]:
+        filetje.write(i+"\n")
+        #i.to_csv(Excellijstnamen[item]+".csv",sep='\n')
+    filetje.close()
 
 
 # In[53]:
 
-for e in VennLijstNietGefilterd[3]:
-    print(e)
-
-
-# In[58]:
-
-import re
-
-Excellijst = [df_kr,df_dd,df_mpk3,df_mpk6]
-Excellijstnamen = ['df_kr','df_dd','df_mpk3','df_mpk6']
-y = 0
-
-for x in Excellijst:
-    string = ""
-    for ding in str(x):
-        string = string + ding
-    #print(string)
-    regex = r'([A-Z]\w+\.[1234])'
-    pattern = re.compile(regex) 
-    accessiecodes = re.findall(pattern, string)
-    print('Dit is de', Excellijstnamen[y], 'lijst' ,accessiecodes)
-    y += 1
-    #print(string) deze later weghalen
-
-#print(df_kr[2:])
+#for e in VennLijstNietGefilterd[3]:
+    #print(e)
 
 """
 df_kr_lijstje = ['ATCG00490.1', 'AT2G07732.1', 'ATMG00280.1', 'AT4G33010.1', 'AT4G33010.2', 'AT5G17920.1', 'AT2G43800.1', 'AT5G20980.1', 'AT2G26080.1', 'AT4G29060.1', 'AT4G29060.2', 'AT4G37930.1', 'AT5G26780.1', 'AT5G25980.2', 'AT5G25980.1', 'AT4G24280.1', 'AT3G29320.1', 'AT2G05710.1', 'AT3G52930.1', 'AT3G26650.1', 'AT2G36530.1', 'AT4G24620.1', 'AT4G24620.2', 'AT1G66200.1', 'AT1G66200.2', 'AT1G66200.3', 'AT1G79920.1', 'AT1G79930.1', 'AT3G08590.1', 'AT3G04120.1', 'AT3G46970.1', 'AT3G09840.1', 'AT3G53230.1', 'AT2G24200.1', 'AT2G24200.3', 'AT3G09820.1', 'AT3G09820.2', 'AT3G52880.1', 'AT1G57720.1', 'AT1G09780.1', 'AT4G20850.1', 'AT4G21280.1', 'AT4G21280.2', 'AT1G16080.1', 'AT5G04590.1', 'AT1G79550.1', 'AT3G15450.1', 'AT3G05180.1', 'AT3G10020.1', 'AT2G46440.1', 'AT5G49070.1', 'AT1G57980.1', 'AT2G43590.1', 'AT5G08380.1', 'AT5G15050.1', 'AT1G79790.1', 'AT3G01440.1', 'AT5G52960.1', 'AT5G16760.1', 'AT5G64250.1', 'AT2G37470.1', 'AT1G07790.1', 'AT3G53650.1', 'AT5G24400.1', 'AT2G41430.1', 'AT2G35410.1', 'AT5G15970.1', 'AT4G28300.1', 'AT1G11660.1', 'AT5G20250.4', 'AT5G20250.1', 'AT2G25070.1', 'AT5G21100.1', 'AT1G15930.1', 'AT1G15750.1', 'AT1G36320.1', 'AT1G49975.1', 'AT5G16840.1', 'AT1G53520.1']
@@ -113,25 +113,36 @@ df_dd_lijstje = [c for c in df_dd_lijstje if c not in df_kr_lijstje]
 df_mpk3_lijstje = [c for c in df_mpk3_lijstje if c not in df_kr_lijstje]
 df_mpk6_lijstje = [c for c in df_mpk6_lijstje if c not in df_kr_lijstje]
 
-print("Dit is df_kr_eiwitten")    
+vennStuff = [df_dd_lijstje,df_mpk3_lijstje,df_mpk6_lijstje]
+vennNames = ["df_dd_lijstje","df_mpk3_lijstje","df_mpk6_lijstje"]
+for item in range(len(vennStuff)):
+    filetje = open(vennNames[item]+"ZonderKR.txt",'w');
+    for i in VennLijstNietGefilterd[item]:
+        filetje.write(i+"\n")
+        #i.to_csv(Excellijstnamen[item]+".csv",sep='\n')
+    filetje.close()
+
+sys.exit()
+
+#print("Dit is df_kr_eiwitten")    
 for e in df_kr_lijstje:
     #print(e)
     pass
-print("Dit is df_dd_eiwitten")
+#print("Dit is df_dd_eiwitten")
 for f in df_dd_lijstje:
     #print(f)
     pass
-print("Dit is df_mpk3_eiwitten")
+#print("Dit is df_mpk3_eiwitten")
 for g in df_mpk3_lijstje:
     #print(g)
     pass
-print("Dit is df_mpk6_eiwitten")
+#print("Dit is df_mpk6_eiwitten")
 for h in df_mpk6_lijstje:
     #print(h)    
     pass
     
 
-
+sys.exit()
 # In[29]:
 
 aantal = 0
@@ -139,7 +150,7 @@ for u in Excellijst:
     tellen = u['Anova (p)']
     for entry in tellen:
         aantal += 1
-print(aantal)
+#print(aantal)
 
 
 # Megalijsten
@@ -153,7 +164,7 @@ for p in Excellijst:
     for protein in prot:
         Ultieme_protein_lijst.append(protein)
         Aantal += 1
-print("Dit is het aantal Eiwitten zonder filteren :" ,Aantal)
+#print("Dit is het aantal Eiwitten zonder filteren :" ,Aantal)
 
 Aantal = 0
 Anova_index = 0
@@ -165,7 +176,7 @@ for an in Excellijst:
         if anovaatje > 0.01:
             Ultieme_Anova_lijst.append(anovaatje)
             Aantal += 1
-print("Dit is het aantal Eiwitten gefilterd op Anova p-waarde boven 0.01 :" ,Aantal)
+#print("Dit is het aantal Eiwitten gefilterd op Anova p-waarde boven 0.01 :" ,Aantal)
 
 Aantal = 0
 Confindex = 0
@@ -177,7 +188,7 @@ for confje in Excellijst:
         if confie > 50:
             Ultieme_Conf_lijst.append(confie)
             Aantal += 1
-print("Dit is het aantal Eiwitten gefilterd op confidence waardes boven 50 :" ,Aantal)
+#print("Dit is het aantal Eiwitten gefilterd op confidence waardes boven 50 :" ,Aantal)
 
 
 # In[87]:
@@ -189,7 +200,7 @@ for p in Excellijst:
     for protein in prot:
         Ultieme_protein_lijst.append(protein)
         Aantal += 1
-print("Dit is het aantal Eiwitten zonder filteren" ,Aantal)
+#print("Dit is het aantal Eiwitten zonder filteren" ,Aantal)
 
 Aantal = 0
 Anova_index = []
@@ -202,7 +213,7 @@ for an in Excellijst:
             Ultieme_Anova_lijst.append(anovaatje)
             Anova_index.append(Ultieme_Anova_lijst.index(anovaatje))
             Aantal += 1
-print("Dit is het aantal Eiwitten gefilterd op Anova p-waarde boven 0.01" ,Aantal)
+#print("Dit is het aantal Eiwitten gefilterd op Anova p-waarde boven 0.01" ,Aantal)
 
 Aantal = 0
 Confindex = []
@@ -215,7 +226,7 @@ for confje in Excellijst:
             Ultieme_Conf_lijst.append(confie)
             Confindex.append(Ultieme_Conf_lijst.index(confie))
             Aantal += 1
-print("Dit is het aantal Eiwitten gefilterd op confidence waardes boven 50" ,Aantal)
+#print("Dit is het aantal Eiwitten gefilterd op confidence waardes boven 50" ,Aantal)
 
 Hulplist1 = [c for c in Anova_index if c in Confindex]
 
@@ -230,7 +241,7 @@ for dingetje in Ultieme_protein_lijst:
     if dingetje != 0:
         nieuwe_lijst.append(dingetje)
 
-print(nieuwe_lijst)
+#print(nieuwe_lijst)
 
 
 # Ik heb een lijst met alle eiwitten per excelfile.
@@ -333,7 +344,7 @@ for e in Excellijst:
     for g in Anovas:
         if g < 0.01:
             lijstano.append(g)
-print(lijstano)
+#print(lijstano)
 
 
 # 
@@ -370,7 +381,7 @@ for e in Excellijst:
     for g in Anovas:
         if g < 0.01:
             lijstconf.append(g)
-print(lijstconf)
+#print(lijstconf)
 
 
 # Wat is ['RPL2.1', 'ATPDX1.1', 'PDX1.1'] hierboven op het eind van df_mpk6 en ATPM24.1 in df_mpk3? -Deze zijn eruit gegooit (de regex was niet perfect)
@@ -427,7 +438,7 @@ for h in Uniek_mpk6:
 # In[90]:
 
 data = pd.ExcelFile("D:\Bio-Infmap\data-tabel.xlsx")
-print(data.sheet_names)
+#print(data.sheet_names)
 df_data = data.parse("Sample overzicht", skiprow=2)
 df_data.head()
 
