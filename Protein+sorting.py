@@ -10,7 +10,7 @@
 import pandas as pd
 import sys
 
-desiredP = 0.01
+desiredP = 0.05
 desiredConf = 50
 
 KR = pd.ExcelFile("KR.xlsx")
