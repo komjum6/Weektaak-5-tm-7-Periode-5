@@ -107,17 +107,20 @@ df_mpk6_lijstje = ['AT5G17870.1', 'ATCG00830.1', 'AT2G38230.1', 'AT2G38210.1', '
 df_kr_lijstje = VennLijstNietGefilterd[0]
 df_dd_lijstje = VennLijstNietGefilterd[1]
 df_mpk3_lijstje = VennLijstNietGefilterd[2]
-df_mpk6_lijstje = VennLijstNietGefilterd[3]
+df_mpk6_lijstje = VennLijstNietGefilterd[3] 
+
 
 df_dd_lijstje = [c for c in df_dd_lijstje if c not in df_kr_lijstje]
 df_mpk3_lijstje = [c for c in df_mpk3_lijstje if c not in df_kr_lijstje]
 df_mpk6_lijstje = [c for c in df_mpk6_lijstje if c not in df_kr_lijstje]
 
+print(len(df_dd_lijstje))
+
 vennStuff = [df_dd_lijstje,df_mpk3_lijstje,df_mpk6_lijstje]
 vennNames = ["df_dd_lijstje","df_mpk3_lijstje","df_mpk6_lijstje"]
 for item in range(len(vennStuff)):
     filetje = open(vennNames[item]+"ZonderKR.txt",'w');
-    for i in VennLijstNietGefilterd[item]:
+    for i in VennStuff[item]:
         filetje.write(i+"\n")
         #i.to_csv(Excellijstnamen[item]+".csv",sep='\n')
     filetje.close()
