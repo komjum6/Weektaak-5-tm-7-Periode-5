@@ -120,7 +120,7 @@ vennStuff = [df_dd_lijstje,df_mpk3_lijstje,df_mpk6_lijstje]
 vennNames = ["df_dd_lijstje","df_mpk3_lijstje","df_mpk6_lijstje"]
 for item in range(len(vennStuff)):
     filetje = open(vennNames[item]+"ZonderKR.txt",'w');
-    for i in VennStuff[item]:
+    for i in vennStuff[item]:
         filetje.write(i+"\n")
         #i.to_csv(Excellijstnamen[item]+".csv",sep='\n')
     filetje.close()
