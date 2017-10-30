@@ -1,0 +1,6 @@
+https://string-db.org/cgi/network.pl?taskId=j1mZvotuE4fI p<.01 alles
+https://string-db.org/cgi/network.pl?taskId=QVHmhlMmocT0 p<.05 alles
+https://string-db.org/cgi/network.pl?taskId=8gw60XBlU6yO p<.05 dd+3
+https://string-db.org/cgi/network.pl?taskId=ajOPVBqImq7B p<.01 dd+3
+https://string-db.org/cgi/network.pl?taskId=AEukXglUEOSD p<.05 dd+6
+https://string-db.org/cgi/network.pl?taskId=zal3KwY7BaNU p<.01 dd+6
