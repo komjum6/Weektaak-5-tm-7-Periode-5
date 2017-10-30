@@ -10,7 +10,7 @@
 import pandas as pd
 import sys
 
-desiredP = 0.05
+desiredP = 0.01
 desiredConf = 50
 
 KR = pd.ExcelFile("KR.xlsx")
@@ -86,7 +86,7 @@ for x in Excellijst:
 
 
 for item in range(len(VennLijstNietGefilterd)):
-    filetje = open(Excellijstnamen[item]+"MetKR.txt",'w');
+    filetje = open(Excellijstnamen[item]+"MetKR"+str(desiredP)+".txt",'w');
     for i in VennLijstNietGefilterd[item]:
         filetje.write(i+"\n")
         #i.to_csv(Excellijstnamen[item]+".csv",sep='\n')
@@ -119,7 +119,7 @@ print(len(df_dd_lijstje))
 vennStuff = [df_dd_lijstje,df_mpk3_lijstje,df_mpk6_lijstje]
 vennNames = ["df_dd_lijstje","df_mpk3_lijstje","df_mpk6_lijstje"]
 for item in range(len(vennStuff)):
-    filetje = open(vennNames[item]+"ZonderKR.txt",'w');
+    filetje = open(vennNames[item]+"ZonderKR"+str(desiredP)+".txt",'w');
     for i in vennStuff[item]:
         filetje.write(i+"\n")
         #i.to_csv(Excellijstnamen[item]+".csv",sep='\n')
